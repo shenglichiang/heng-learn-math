@@ -14,10 +14,17 @@ body {
   width: 100vw;
   height: 100vh;
   display: flex;
-  flex-direction: column;
   align-items: center;
+  justify-content: center;
 
+  flex-direction: row-reverse;
   position: relative;
 
   background-color: #075e61;
+
+  @media screen and (max-width: 768px) {
+    .pageContainer {
+      flex-direction: column;
+    }
+  }
 }

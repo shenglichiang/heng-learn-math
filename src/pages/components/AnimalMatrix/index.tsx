@@ -41,7 +41,7 @@ interface RandomNumState {
 export const useRandomNumStore = create<RandomNumState>((set) => ({
   randomRows: 1,
   randomCols: 1,
-  generateRandomNums: (min: number = 1, max: number = 5) => {
+  generateRandomNums: (min: number = 1, max: number = 10) => {
     const getRandomNum = (minNum: number, maxNum: number) => {
       return Math.floor(Math.random() * (maxNum - minNum + 1)) + minNum;
     };
@@ -54,8 +54,6 @@ export const useRandomNumStore = create<RandomNumState>((set) => ({
 useRandomNumStore.getState().generateRandomNums();
 const AnimalMatrix = () => {
   const [matrix, setMatrix] = useState<Animal[][]>([]);
-  // const [rowCount, setRowCount] = useState<number>(1); // 行数=相同图片的数量
-  // const [colCount, setColCount] = useState<number>(1); // 列数=不同图片的数量
 
   const { randomRows, randomCols } = useRandomNumStore((state) => state);
 
@@ -73,12 +71,8 @@ const AnimalMatrix = () => {
 
   // 生成图片矩阵
   const generateMatrix = () => {
-    // setRowCount(randomRows);
-    // setColCount(randomCols);
-
     const uniqueAnimals = getRandomAnimals(randomCols);
 
-    // 生成图片矩阵
     const newMatrix: typeof matrix = [];
     for (let i = 0; i < randomRows; i++) {
       newMatrix.push(uniqueAnimals.map((animal) => ({ ...animal })));
@@ -89,7 +83,7 @@ const AnimalMatrix = () => {
   // 初始化组件
   useEffect(() => {
     generateMatrix();
-  }, []);
+  }, [randomRows, randomCols]);
 
   return (
     <div

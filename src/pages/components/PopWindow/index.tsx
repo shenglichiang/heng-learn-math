@@ -51,7 +51,7 @@ const PopWindow = () => {
   const handleOK = () => {
     setIsPopWindowOpen(false);
     setIsRight(undefined);
-    setInputValue("");
+    clearInputValue();
     generateRandomNums(); // 重新生成随机数
   };
   return (
