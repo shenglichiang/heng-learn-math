@@ -41,7 +41,7 @@ interface RandomNumState {
 export const useRandomNumStore = create<RandomNumState>((set) => ({
   randomRows: 1,
   randomCols: 1,
-  generateRandomNums: (min: number = 1, max: number = 6) => {
+  generateRandomNums: (min: number = 1, max: number = 5) => {
     const getRandomNum = (minNum: number, maxNum: number) => {
       return Math.floor(Math.random() * (maxNum - minNum + 1)) + minNum;
     };

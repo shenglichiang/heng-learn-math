@@ -1,0 +1,46 @@
+.popWrapper {
+  width: 100vw;
+  height: 100vh;
+  position: absolute;
+  background-color: rgba(24, 26, 26, 0.8);
+
+  transition: all 0.3s ease-in-out;
+
+  z-index: 1;
+
+  .popWindow {
+    width: 60vw;
+    height: 40vw;
+
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+    border-radius: 3vw;
+    background: rgba(34, 130, 168, 0.85);
+
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+
+    position: absolute;
+    z-index: 100;
+
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+
+    .popEquation {
+      font-size: 6vw;
+      color: antiquewhite;
+    }
+
+    .hardy {
+      width: 10vw;
+      height: auto;
+
+      border-radius: 50%;
+    }
+  }
+}

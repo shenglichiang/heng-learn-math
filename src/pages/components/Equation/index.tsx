@@ -1,26 +1,31 @@
 import styles from "./index.less";
 import { useRandomNumStore } from "../AnimalMatrix";
 import { useState } from "react";
+import { create } from "zustand";
+
+interface InputNumState {
+  inputValue: string;
+  setInputValue: (inputValue: string) => void;
+  clearInputValue: () => void;
+}
+export const useInputNumStore = create<InputNumState>((set) => ({
+  inputValue: "",
+
+  setInputValue: (inputValue: string) => set({ inputValue }),
+
+  clearInputValue: () => set({ inputValue: "" }),
+}));
 
 const Equation = () => {
   const { randomRows, randomCols } = useRandomNumStore((state) => state);
-
   const [inputNum, setInputNum] = useState<string | null>(null);
-
-  // 监听输入变化
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value;
-
-    console.log(value);
-
-    setInputNum(value);
-  };
-
+  const { inputValue, setInputValue, clearInputValue } = useInputNumStore(
+    (state) => state,
+  );
   // 触发提交
   const handleSubmit = () => {
-    if (inputNum) {
-      // 触发提交
-      setInputNum("");
+    if (inputValue) {
+      clearInputValue();
     }
   };
 
@@ -42,12 +47,12 @@ const Equation = () => {
 
       <div className={styles.countContainer}>
         <div className={styles.multiNum}>
-          <label htmlFor="answerNum"></label>
+          {/* <label htmlFor="answerNum"></label> */}
           <input
             id="answerNum"
             type="number"
             placeholder="动物总数"
-            onChange={handleInputChange}
+            onChange={(e) => setInputValue(e.target.value)}
             onKeyDown={(e) => {
               // 回车触发提交
               if (e.key === "Enter") handleSubmit();
