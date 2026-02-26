@@ -6,7 +6,7 @@ export default function HomePage() {
     <>
       <Equation />
       <AnimalMatrix />
-      {/* <PopWindow /> */}
+      <PopWindow />
     </>
   );
 }

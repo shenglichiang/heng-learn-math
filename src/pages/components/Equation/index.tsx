@@ -2,7 +2,7 @@ import styles from "./index.less";
 import { useRandomNumStore } from "../AnimalMatrix";
 import { useState } from "react";
 import { create } from "zustand";
-
+import { usePopWindowStore } from "../PopWindow";
 interface InputNumState {
   inputValue: string;
   setInputValue: (inputValue: string) => void;
@@ -22,10 +22,11 @@ const Equation = () => {
   const { inputValue, setInputValue, clearInputValue } = useInputNumStore(
     (state) => state,
   );
+  const { isPopWindowOpen, setIsPopWindowOpen } = usePopWindowStore();
   // 触发提交
   const handleSubmit = () => {
     if (inputValue) {
-      clearInputValue();
+      setIsPopWindowOpen(true);
     }
   };
 
@@ -63,7 +64,7 @@ const Equation = () => {
         {/* <p className={styles.label}>所有动物总数</p> */}
       </div>
 
-      <button onClick={handleSubmit}>确 定</button>
+      <button onClick={handleSubmit}>确定</button>
     </div>
   );
 };

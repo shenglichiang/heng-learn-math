@@ -54,8 +54,8 @@ export const useRandomNumStore = create<RandomNumState>((set) => ({
 useRandomNumStore.getState().generateRandomNums();
 const AnimalMatrix = () => {
   const [matrix, setMatrix] = useState<Animal[][]>([]);
-  const [rowCount, setRowCount] = useState<number>(1); // 行数=相同图片的数量
-  const [colCount, setColCount] = useState<number>(1); // 列数=不同图片的数量
+  // const [rowCount, setRowCount] = useState<number>(1); // 行数=相同图片的数量
+  // const [colCount, setColCount] = useState<number>(1); // 列数=不同图片的数量
 
   const { randomRows, randomCols } = useRandomNumStore((state) => state);
 
@@ -73,8 +73,8 @@ const AnimalMatrix = () => {
 
   // 生成图片矩阵
   const generateMatrix = () => {
-    setRowCount(randomRows);
-    setColCount(randomCols);
+    // setRowCount(randomRows);
+    // setColCount(randomCols);
 
     const uniqueAnimals = getRandomAnimals(randomCols);
 
@@ -94,7 +94,7 @@ const AnimalMatrix = () => {
   return (
     <div
       className={styles.animalMatrixContainer}
-      style={{ "--col-count": colCount } as React.CSSProperties}
+      style={{ "--col-count": randomCols } as React.CSSProperties}
     >
       {matrix.flat().map((img, index) => (
         <div key={`${img.id}-${index}`} className={styles.animalCell}>
