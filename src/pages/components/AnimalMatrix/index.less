@@ -11,11 +11,13 @@
   // gap: 0.5vw;
   // margin: 1vw;
 
-  background-color: #56a8a8;
+  background-color: rgba(86, 168, 168, 0.7);
   border-radius: 0.6vw;
   // overflow: hidden;
   @media screen and (max-width: 768px) {
-    width: 50vw;
+    width: 90vw;
+    height: 90vw;
+    border-radius: 2vw;
   }
 
   .animalCell {
@@ -34,6 +36,10 @@
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
     background: rgba(255, 255, 255, 0.15);
 
+    @media screen and (max-width: 768px) {
+      border-radius: 2vw;
+    }
+
     .animal {
       height: 3.8vw;
 
@@ -44,7 +50,13 @@
       object-fit: contain;
       filter: drop-shadow(1px 2px 3px rgba(0, 0, 0, 0.5));
 
-      animation: cute-bounce-in 0.5s ease-in-out;
+      animation:
+        cute-bounce-in 0.5s ease-in-out,
+        animalBreath 3s ease-in-out infinite;
+
+      @media screen and (max-width: 768px) {
+        height: 8vw;
+      }
     }
   }
 }
@@ -64,5 +76,17 @@
     opacity: 1;
     transform: translateY(0) scale(1);
     rotate: calc(0deg);
+  }
+}
+
+@keyframes animalBreath {
+  0% {
+    scale: calc(1);
+  }
+  50% {
+    scale: calc(1.1);
+  }
+  100% {
+    scale: calc(1);
   }
 }

@@ -6,6 +6,7 @@ import { useInputNumStore, useRightCountStore } from "../Equation";
 // 导入素材
 import Hardy from "@/assets/hardy.jpg";
 import { useEffect, useState } from "react";
+import clsx from "clsx";
 
 // pop窗口是否打开状态
 interface PopWindowStore {
@@ -44,6 +45,25 @@ const PopWindow = () => {
   const { setIsLotteryPopWindowOpen } = useLotteryPopWindowStore();
 
   const correctResult = randomRows * randomCols;
+  const [isMobile, setIsMobile] = useState(false);
+
+  // 监听屏幕宽度
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth <= 768);
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
+    return () => window.removeEventListener("resize", checkMobile);
+  }, []);
+
+  const getOkBtnClassName = () => {
+    if (isMobile) {
+      return ` ${rightCount >= 10 ? styles["okBtnMobileLarge"] : styles["okBtnMobileSmall"]}`;
+    } else {
+      return ` ${rightCount >= 10 ? styles["okBtnLarge"] : styles["okBtnSmall"]}`;
+    }
+  };
+
+  console.log(getOkBtnClassName(), ">>>>>>>>>>");
 
   // console.log(inputValue, "inputValue___");
 
@@ -78,7 +98,7 @@ const PopWindow = () => {
   return (
     isPopWindowOpen && (
       <div className={styles.popWrapper}>
-        <div className={styles.popWindow}>
+        <div className={clsx(styles.popWindow, styles.show)}>
           <img src={Hardy} alt="Hardy" className={styles.hardy} />
 
           <p className={styles.popEquation}>
@@ -88,14 +108,14 @@ const PopWindow = () => {
           </p>
           {!isRight && (
             <p className={styles.rightPopEquation}>
-              {randomRows} X {randomCols} = {randomRows * randomCols}
+              {randomRows} X {randomCols} = {randomRows * randomCols} ✅
             </p>
           )}
           <button
             onClick={handleOK}
-            style={{ width: rightCount >= 10 ? "30vw" : "12vw" }}
+            className={clsx(styles.okBtn, getOkBtnClassName())}
           >
-            {rightCount >= 10 ? "已答对10题➡️" : "好的"}
+            {rightCount >= 10 ? "已答对10题➡️" : "好  的"}
           </button>
         </div>
       </div>

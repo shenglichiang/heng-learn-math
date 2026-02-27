@@ -1,6 +1,6 @@
 import styles from "./index.less";
 import { useRandomNumStore } from "../AnimalMatrix";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { create } from "zustand";
 import { usePopWindowStore } from "../PopWindow";
 interface InputNumState {
@@ -31,6 +31,8 @@ export const useRightCountStore = create<RightCountState>((set, get) => ({
     return newCount;
   },
 }));
+
+// 主逻辑和主渲染
 const Equation = () => {
   const { randomRows, randomCols } = useRandomNumStore((state) => state);
   const [inputNum, setInputNum] = useState<string | null>(null);
@@ -39,6 +41,8 @@ const Equation = () => {
   );
   const { isPopWindowOpen, setIsPopWindowOpen } = usePopWindowStore();
   const { rightCount, incrementRightCount } = useRightCountStore();
+
+  const answerInputRef = useRef<HTMLInputElement>(null);
   // 触发提交
   const handleSubmit = () => {
     if (!inputValue) {
@@ -50,7 +54,7 @@ const Equation = () => {
     if (Number(inputValue) === randomRows * randomCols) {
       const currentRightCount = incrementRightCount();
       let rightCount = currentRightCount;
-      // console.log(rightCount, "rightCount____");
+      console.log(rightCount, "rightCount____");
     }
   };
 
@@ -62,14 +66,14 @@ const Equation = () => {
       <div className={styles.equation}>
         <div className={styles.countContainer}>
           <div className={styles.multiNum}>{randomRows}</div>
-          <p className={styles.label}>每列动物个数</p>
+          <p className={styles.label}>列:动物个数</p>
         </div>
 
         <div className={styles.bigCharacter}>×</div>
 
         <div className={styles.countContainer}>
           <div className={styles.multiNum}>{randomCols}</div>
-          <p className={styles.label}>每行动物种数</p>
+          <p className={styles.label}>行:动物种数</p>
         </div>
 
         <div className={styles.bigCharacter}>=</div>
@@ -80,7 +84,7 @@ const Equation = () => {
             <input
               id="answerNum"
               type="number"
-              placeholder="_____?"
+              placeholder="(    )"
               value={inputValue}
               onChange={(e) => setInputValue(e.target.value)}
               onKeyDown={(e) => {

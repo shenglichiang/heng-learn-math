@@ -6,6 +6,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  flex-direction: column;
 
   background-color: rgba(0, 26, 31, 0.9);
 
@@ -17,6 +18,12 @@
     border-radius: 0.6vw;
 
     z-index: 100;
+
+    @media screen and (max-width: 768px) {
+      width: 90vw;
+      height: 50.625vw;
+      border-radius: 3vw;
+    }
   }
 
   .lotteryImg {
@@ -28,6 +35,67 @@
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
 
     animation: flipBounceReset 0.6s ease-in-out;
+
+    @media screen and (max-width: 768px) {
+      border-radius: 3vw;
+    }
+  }
+  .closeBtn {
+    position: relative;
+    width: 6vw;
+    height: 6vw;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    background-color: rgba(255, 236, 236, 0.2);
+    border-radius: 50%;
+    margin: 1vw;
+
+    user-select: none;
+
+    @media screen and (max-width: 768px) {
+      width: 18vw;
+      height: 18vw;
+      margin-top: 15vw;
+    }
+
+    &::before {
+      content: "";
+      position: absolute;
+      height: 0.4vw;
+      width: 4vw;
+      border-radius: 0.25vw;
+      animation: formY 0.3s ease-in-out 1.5s forwards;
+      background-color: #ff6666;
+
+      @media screen and (max-width: 768px) {
+        height: 0.8vw;
+        width: 11vw;
+      }
+    }
+
+    &::after {
+      content: "";
+      position: absolute;
+      height: 0.4vw;
+      width: 4vw;
+      border-radius: 0.25vw;
+      animation: formX 0.3s ease-in-out 1.5s forwards;
+      background-color: #ff6666;
+      @media screen and (max-width: 768px) {
+        height: 0.8vw;
+        width: 11vw;
+      }
+    }
+    &:hover {
+      //   background-color: #ffdedc;
+      &::before,
+      &::after {
+        background-color: #ff3c3c;
+      }
+    }
   }
 }
 
@@ -50,5 +118,23 @@
   }
   100% {
     transform: rotateX(0deg) scale(1);
+  }
+}
+
+@keyframes formX {
+  0% {
+    rotate: calc(0deg);
+  }
+  100% {
+    rotate: calc(-45deg);
+  }
+}
+
+@keyframes formY {
+  0% {
+    rotate: calc(0deg);
+  }
+  100% {
+    rotate: calc(45deg);
   }
 }

@@ -19,7 +19,11 @@ const LotteryPop = () => {
   const randomNum = Math.floor(Math.random() * lotteryImgs.length);
   const bingoImg = lotteryImgs[randomNum];
   const { id, name, url } = bingoImg;
-  console.log(bingoImg);
+  //   console.log(bingoImg);
+
+  const handleGameOver = () => {
+    window.location.reload();
+  };
 
   return (
     <div
@@ -31,6 +35,7 @@ const LotteryPop = () => {
       <div className={styles.lotteryPop}>
         <img src={url} alt={name} className={styles.lotteryImg} />
       </div>
+      <div className={styles.closeBtn} onClick={handleGameOver}></div>
     </div>
   );
 };
