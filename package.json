@@ -9,6 +9,7 @@
     "start": "npm run dev"
   },
   "dependencies": {
+    "clsx": "^2.1.1",
     "umi": "^4.6.28",
     "zustand": "^5.0.11"
   },

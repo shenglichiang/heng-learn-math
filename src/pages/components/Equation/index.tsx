@@ -16,6 +16,21 @@ export const useInputNumStore = create<InputNumState>((set) => ({
   clearInputValue: () => set({ inputValue: "" }),
 }));
 
+interface RightCountState {
+  rightCount: number;
+  setRightCount: (rightCount: number) => void;
+  incrementRightCount: () => void;
+}
+export const useRightCountStore = create<RightCountState>((set, get) => ({
+  rightCount: 0,
+  setRightCount: (rightCount: number) => set(() => ({ rightCount })),
+  incrementRightCount: () => {
+    const current = get().rightCount;
+    const newCount = current + 1;
+    set(() => ({ rightCount: newCount }));
+    return newCount;
+  },
+}));
 const Equation = () => {
   const { randomRows, randomCols } = useRandomNumStore((state) => state);
   const [inputNum, setInputNum] = useState<string | null>(null);
@@ -23,14 +38,24 @@ const Equation = () => {
     (state) => state,
   );
   const { isPopWindowOpen, setIsPopWindowOpen } = usePopWindowStore();
+  const { rightCount, incrementRightCount } = useRightCountStore();
   // 触发提交
   const handleSubmit = () => {
-    if (inputValue) {
-      setIsPopWindowOpen(true);
-    } else {
+    if (!inputValue) {
       alert("请输入答案...");
+      return;
+    }
+    setIsPopWindowOpen(true);
+
+    if (Number(inputValue) === randomRows * randomCols) {
+      const currentRightCount = incrementRightCount();
+      let rightCount = currentRightCount;
+      // console.log(rightCount, "rightCount____");
     }
   };
+
+  const progressWidth = Math.min(rightCount / 10, 1);
+  // console.log(progressWidth);
 
   return (
     <div className={styles.equationContainer}>
@@ -55,7 +80,7 @@ const Equation = () => {
             <input
               id="answerNum"
               type="number"
-              placeholder="_____"
+              placeholder="_____?"
               value={inputValue}
               onChange={(e) => setInputValue(e.target.value)}
               onKeyDown={(e) => {
@@ -68,6 +93,13 @@ const Equation = () => {
         </div>
       </div>
       <button onClick={handleSubmit}>确 定</button>
+
+      <div className={styles.progressBar}>
+        <div
+          className={styles.progress}
+          style={{ width: `${progressWidth * 100}%` }}
+        ></div>
+      </div>
     </div>
   );
 };

@@ -1,0 +1,54 @@
+.lotteryWrapper {
+  width: 100vw;
+  height: 100vh;
+  position: absolute;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  background-color: rgba(0, 26, 31, 0.9);
+
+  .lotteryPop {
+    width: 100vh;
+    height: 56.25vh;
+
+    background-color: rgba(255, 255, 255, 0.7);
+    border-radius: 0.6vw;
+
+    z-index: 100;
+  }
+
+  .lotteryImg {
+    width: 100%;
+    height: 100%;
+    border-radius: 0.6vw;
+    object-fit: cover;
+    // backface-visibility: hidden;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+
+    animation: flipBounceReset 0.6s ease-in-out;
+  }
+}
+
+.hide {
+  display: none;
+}
+
+@keyframes flipBounceReset {
+  0% {
+    transform: rotateX(180deg) scale(1);
+  }
+  40% {
+    transform: rotateX(90deg) scale(1.05);
+  }
+  60% {
+    transform: rotateX(0deg) scale(0.98);
+  }
+  80% {
+    transform: rotateX(0deg) scale(1.02);
+  }
+  100% {
+    transform: rotateX(0deg) scale(1);
+  }
+}

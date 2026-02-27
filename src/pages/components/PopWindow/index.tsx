@@ -1,12 +1,13 @@
 import styles from "./index.less";
 import { create } from "zustand";
 import { useRandomNumStore } from "../AnimalMatrix";
-import { useInputNumStore } from "../Equation";
+import { useInputNumStore, useRightCountStore } from "../Equation";
 
 // 导入素材
 import Hardy from "@/assets/hardy.jpg";
 import { useEffect, useState } from "react";
 
+// pop窗口是否打开状态
 interface PopWindowStore {
   isPopWindowOpen: boolean;
   setIsPopWindowOpen: (isPopWindowOpen: boolean) => void;
@@ -17,6 +18,19 @@ export const usePopWindowStore = create<PopWindowStore>((set) => ({
   setIsPopWindowOpen: (isPopWindowOpen: boolean) =>
     set(() => ({ isPopWindowOpen })),
 }));
+
+// lottery 窗口是否打开
+interface LotteryPopWindowStore {
+  isLotteryPopWindowOpen: boolean;
+  setIsLotteryPopWindowOpen: (isLotteryPopWindowOpen: boolean) => void;
+}
+export const useLotteryPopWindowStore = create<LotteryPopWindowStore>(
+  (set) => ({
+    isLotteryPopWindowOpen: false,
+    setIsLotteryPopWindowOpen: (isLotteryPopWindowOpen: boolean) =>
+      set(() => ({ isLotteryPopWindowOpen })),
+  }),
+);
 const PopWindow = () => {
   const { randomRows, randomCols, generateRandomNums } = useRandomNumStore(
     (state) => state,
@@ -26,10 +40,12 @@ const PopWindow = () => {
   );
   const [isRight, setIsRight] = useState<boolean | undefined>(undefined);
   const { isPopWindowOpen, setIsPopWindowOpen } = usePopWindowStore();
+  const { rightCount } = useRightCountStore();
+  const { setIsLotteryPopWindowOpen } = useLotteryPopWindowStore();
 
   const correctResult = randomRows * randomCols;
 
-  console.log(inputValue);
+  // console.log(inputValue, "inputValue___");
 
   useEffect(() => {
     if (!inputValue || inputValue.trim() === "") {
@@ -52,7 +68,12 @@ const PopWindow = () => {
     setIsPopWindowOpen(false);
     setIsRight(undefined);
     clearInputValue();
-    generateRandomNums(); // 重新生成随机数
+
+    if (rightCount >= 10) {
+      setIsLotteryPopWindowOpen(true);
+    } else {
+      generateRandomNums(); // 重新生成随机数
+    }
   };
   return (
     isPopWindowOpen && (
@@ -70,7 +91,12 @@ const PopWindow = () => {
               {randomRows} X {randomCols} = {randomRows * randomCols}
             </p>
           )}
-          <button onClick={handleOK}>好的</button>
+          <button
+            onClick={handleOK}
+            style={{ width: rightCount >= 10 ? "30vw" : "12vw" }}
+          >
+            {rightCount >= 10 ? "已答对10题➡️" : "好的"}
+          </button>
         </div>
       </div>
     )
