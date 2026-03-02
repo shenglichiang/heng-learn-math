@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import styles from "./index.less";
 import { create } from "zustand";
+import { useStartedStore } from "@/pages/components/PreSettingsPop";
+import { useGameSettingsStore } from "@/pages/components/PreSettingsPop";
 
 // 导入素材
 import catUrl from "@/assets/multiplication/cat.png";
@@ -38,24 +40,26 @@ interface RandomNumState {
   randomCols: number;
   generateRandomNums: (min?: number, max?: number) => void;
 }
-export const useRandomNumStore = create<RandomNumState>((set) => ({
+export const useRandomNumStore = create<RandomNumState>((set, get) => ({
   randomRows: 1,
   randomCols: 1,
-  generateRandomNums: (min: number = 1, max: number = 10) => {
-    const getRandomNum = (minNum: number, maxNum: number) => {
-      return Math.floor(Math.random() * (maxNum - minNum + 1)) + minNum;
-    };
+  generateRandomNums: (min = 1, forcedMax?: number) => {
+    const max = forcedMax ?? useGameSettingsStore.getState().maxMultiplier;
+    const getRandomNum = (minNum: number, maxNum: number) =>
+      Math.floor(Math.random() * (maxNum - minNum + 1)) + minNum;
     set({
       randomRows: getRandomNum(min, max),
       randomCols: getRandomNum(min, max),
     });
   },
 }));
-useRandomNumStore.getState().generateRandomNums();
+
 const AnimalMatrix = () => {
   const [matrix, setMatrix] = useState<Animal[][]>([]);
-
-  const { randomRows, randomCols } = useRandomNumStore((state) => state);
+  const { randomRows, randomCols, generateRandomNums } = useRandomNumStore(
+    (state) => state,
+  );
+  const { isStarted } = useStartedStore();
 
   // 随机选取n个动物
   const getRandomAnimals = (count: number): Animal[] => {
@@ -82,8 +86,18 @@ const AnimalMatrix = () => {
 
   // 初始化组件
   useEffect(() => {
-    generateMatrix();
-  }, [randomRows, randomCols]);
+    if (!isStarted) {
+      setMatrix([]);
+      return;
+    }
+    generateRandomNums();
+  }, [isStarted, generateRandomNums]);
+
+  useEffect(() => {
+    if (randomRows >= 1 && randomCols >= 1 && isStarted) {
+      generateMatrix();
+    }
+  }, [randomRows, randomCols, isStarted]);
 
   return (
     <div

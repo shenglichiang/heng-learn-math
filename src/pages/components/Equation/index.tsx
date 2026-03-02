@@ -3,6 +3,7 @@ import { useRandomNumStore } from "../AnimalMatrix";
 import { useRef, useState } from "react";
 import { create } from "zustand";
 import { usePopWindowStore } from "../PopWindow";
+import { useGameSettingsStore } from "../PreSettingsPop";
 interface InputNumState {
   inputValue: string;
   setInputValue: (inputValue: string) => void;
@@ -16,6 +17,7 @@ export const useInputNumStore = create<InputNumState>((set) => ({
   clearInputValue: () => set({ inputValue: "" }),
 }));
 
+// 正确的数量
 interface RightCountState {
   rightCount: number;
   setRightCount: (rightCount: number) => void;
@@ -32,6 +34,16 @@ export const useRightCountStore = create<RightCountState>((set, get) => ({
   },
 }));
 
+// 是否正在提交
+interface IsSubmittingState {
+  isSubmitting: boolean;
+  setIsSubmitting: (isSubmitting: boolean) => void;
+}
+export const useIsSubmittingStore = create<IsSubmittingState>((set) => ({
+  isSubmitting: false,
+  setIsSubmitting: (isSubmitting: boolean) => set({ isSubmitting }),
+}));
+
 // 主逻辑和主渲染
 const Equation = () => {
   const { randomRows, randomCols } = useRandomNumStore((state) => state);
@@ -43,8 +55,15 @@ const Equation = () => {
   const { rightCount, incrementRightCount } = useRightCountStore();
 
   const answerInputRef = useRef<HTMLInputElement>(null);
+
+  const { maxMultiplier, totalLevels, setMaxMultiplier, setTotalLevels } =
+    useGameSettingsStore((state) => state);
+
+  const { isSubmitting, setIsSubmitting } = useIsSubmittingStore();
   // 触发提交
   const handleSubmit = () => {
+    if (isSubmitting) return;
+    setIsSubmitting(true);
     if (!inputValue) {
       alert("请输入答案...");
       return;
@@ -54,11 +73,10 @@ const Equation = () => {
     if (Number(inputValue) === randomRows * randomCols) {
       const currentRightCount = incrementRightCount();
       let rightCount = currentRightCount;
-      console.log(rightCount, "rightCount____");
     }
   };
 
-  const progressWidth = Math.min(rightCount / 10, 1);
+  const progressWidth = Math.min(rightCount / totalLevels, 1);
   // console.log(progressWidth);
 
   return (
@@ -89,7 +107,10 @@ const Equation = () => {
               onChange={(e) => setInputValue(e.target.value)}
               onKeyDown={(e) => {
                 // 回车触发提交
-                if (e.key === "Enter") handleSubmit();
+                if (e.key === "Enter") {
+                  e.preventDefault();
+                  handleSubmit();
+                }
               }}
             />
           </div>

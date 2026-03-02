@@ -1,7 +1,12 @@
 import styles from "./index.less";
 import { create } from "zustand";
 import { useRandomNumStore } from "../AnimalMatrix";
-import { useInputNumStore, useRightCountStore } from "../Equation";
+import {
+  useInputNumStore,
+  useRightCountStore,
+  useIsSubmittingStore,
+} from "../Equation";
+import { useGameSettingsStore } from "../PreSettingsPop";
 
 // 导入素材
 import Hardy from "@/assets/hardy.jpg";
@@ -47,6 +52,8 @@ const PopWindow = () => {
   const correctResult = randomRows * randomCols;
   const [isMobile, setIsMobile] = useState(false);
 
+  const { totalLevels } = useGameSettingsStore();
+  const { setIsSubmitting } = useIsSubmittingStore();
   // 监听屏幕宽度
   useEffect(() => {
     const checkMobile = () => setIsMobile(window.innerWidth <= 768);
@@ -57,14 +64,13 @@ const PopWindow = () => {
 
   const getOkBtnClassName = () => {
     if (isMobile) {
-      return ` ${rightCount >= 10 ? styles["okBtnMobileLarge"] : styles["okBtnMobileSmall"]}`;
+      return ` ${rightCount >= totalLevels ? styles["okBtnMobileLarge"] : styles["okBtnMobileSmall"]}`;
     } else {
-      return ` ${rightCount >= 10 ? styles["okBtnLarge"] : styles["okBtnSmall"]}`;
+      return ` ${rightCount >= totalLevels ? styles["okBtnLarge"] : styles["okBtnSmall"]}`;
     }
   };
 
-  console.log(getOkBtnClassName(), ">>>>>>>>>>");
-
+  // console.log(getOkBtnClassName(), ">>>>>>>>>>");
   // console.log(inputValue, "inputValue___");
 
   useEffect(() => {
@@ -88,8 +94,9 @@ const PopWindow = () => {
     setIsPopWindowOpen(false);
     setIsRight(undefined);
     clearInputValue();
+    setIsSubmitting(false);
 
-    if (rightCount >= 10) {
+    if (rightCount >= totalLevels) {
       setIsLotteryPopWindowOpen(true);
     } else {
       generateRandomNums(); // 重新生成随机数
@@ -115,7 +122,7 @@ const PopWindow = () => {
             onClick={handleOK}
             className={clsx(styles.okBtn, getOkBtnClassName())}
           >
-            {rightCount >= 10 ? "已答对10题➡️" : "好  的"}
+            {rightCount >= totalLevels ? `已答对${totalLevels}题➡️` : "好  的"}
           </button>
         </div>
       </div>

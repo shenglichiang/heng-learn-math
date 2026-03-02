@@ -1,0 +1,139 @@
+.popWrapper {
+  width: 100vw;
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+  background-color: rgba(24, 26, 26, 0.95);
+  transition: all 0.1s ease-in-out;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: auto;
+  box-sizing: border-box;
+
+  .popWindow {
+    width: 45vw;
+    height: 30vw;
+    border-radius: 2.5vw;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+    z-index: 100;
+    box-sizing: border-box;
+    // padding: 2vw 0;
+    color: aquamarine;
+    background-color: rgba(14, 117, 122, 0.9);
+    box-shadow:
+      inset 0 2px 10px rgba(255, 255, 255, 0.3),
+      inset 0 -2px 10px rgba(0, 0, 0, 0.2),
+      0 4px 15px rgba(0, 0, 0, 0.15);
+    border: 1px solid rgba(245, 243, 243, 0.3);
+
+    @media screen and (max-width: 768px) {
+      width: 80vw;
+      height: 54vw;
+      justify-content: space-evenly;
+      background-color: rgba(14, 117, 122, 0.9);
+    }
+  }
+
+  .maxNum,
+  .totalLevel {
+    font-size: 4vw;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    @media screen and (max-width: 768px) {
+      font-size: 8vw;
+    }
+  }
+
+  .selectMaxNum,
+  .selectelevelNum {
+    width: 10vw;
+    height: 5.4vw;
+    font-size: 4.5vw;
+    color: rgb(18, 110, 79);
+
+    // appearance: none;
+    text-align: center;
+
+    border-radius: 1vw;
+
+    font-family:
+      "CustomFont",
+      -apple-system,
+      BlinkMacSystemFont,
+      "Helvetica Neue",
+      sans-serif;
+
+    @media screen and (max-width: 768px) {
+      width: 16vw;
+      height: 10vw;
+      font-size: 7vw;
+      text-align: center;
+    }
+  }
+
+  .startBtn {
+    width: 20vw;
+    height: 8vw;
+    border: none;
+    border-radius: 1vw;
+
+    display: block;
+    object-fit: contain;
+    cursor: pointer;
+
+    font-family:
+      "CustomFont",
+      -apple-system,
+      BlinkMacSystemFont,
+      "Helvetica Neue",
+      sans-serif;
+    font-size: 6vw;
+    background-color: rgb(224, 255, 220);
+    color: rgb(60, 146, 75);
+
+    box-shadow: inset 0 2px 10px rgba(255, 255, 255, 0.3);
+    opacity: 0.9;
+    animation: btnBreath 2s ease-in-out infinite;
+
+    @media screen and (max-width: 768px) {
+      width: 30vw;
+      height: 12vw;
+      font-size: 10vw;
+      border-radius: 2.6vw;
+    }
+
+    &:active {
+      transform: scale(0.96);
+      color: rgb(224, 255, 220);
+      background-color: rgb(60, 146, 75);
+      opacity: 0.95;
+      box-shadow: inset 0 4px 12px rgba(60, 146, 75, 0.4);
+      filter: brightness(0.9);
+    }
+  }
+}
+
+@keyframes btnBreath {
+  0% {
+    scale: calc(1);
+  }
+  50% {
+    scale: calc(0.98);
+  }
+  100% {
+    scale: calc(1);
+  }
+}
+
+.hide {
+  display: none;
+}

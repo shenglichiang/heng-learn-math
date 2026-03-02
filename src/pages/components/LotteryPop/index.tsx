@@ -1,6 +1,8 @@
 import styles from "./index.less";
 import { useLotteryPopWindowStore } from "../PopWindow/";
+import { useStartedStore } from "../PreSettingsPop/";
 import clsx from "clsx";
+
 // 导入素材
 import aisha from "@/assets/lotteryImgs/aisha.jpg";
 import themole from "@/assets/lotteryImgs/themole.jpg";
@@ -14,6 +16,7 @@ const lotteryImgs = [
 
 const LotteryPop = () => {
   const { isLotteryPopWindowOpen } = useLotteryPopWindowStore();
+  const { setIsStarted } = useStartedStore();
 
   // 生成随机数
   const randomNum = Math.floor(Math.random() * lotteryImgs.length);
@@ -23,6 +26,7 @@ const LotteryPop = () => {
 
   const handleGameOver = () => {
     window.location.reload();
+    setIsStarted(false);
   };
 
   return (
