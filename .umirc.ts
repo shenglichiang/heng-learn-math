@@ -6,4 +6,8 @@ export default defineConfig({
     // { path: "/docs", component: "docs" },
   ],
   npmClient: "yarn",
+
+  publicPath: process.env.NODE_ENV === "production" ? "/heng-learn-math/" : "/",
+  history: { type: "hash" },
+  outputPath: "dist",
 });
