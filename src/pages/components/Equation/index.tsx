@@ -1,6 +1,6 @@
 import styles from "./index.less";
 import { useRandomNumStore } from "../AnimalMatrix";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { create } from "zustand";
 import { usePopWindowStore } from "../PopWindow";
 import { useGameSettingsStore } from "../PreSettingsPop";
@@ -60,7 +60,7 @@ const Equation = () => {
     useGameSettingsStore((state) => state);
 
   const { isSubmitting, setIsSubmitting } = useIsSubmittingStore();
-  // 触发提交
+
   const handleSubmit = () => {
     if (isSubmitting) return;
     setIsSubmitting(true);
@@ -78,6 +78,19 @@ const Equation = () => {
 
   const progressWidth = Math.min(rightCount / totalLevels, 1);
   // console.log(progressWidth);
+
+  // 按下空格自动聚焦输入框
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === " ") {
+        answerInputRef.current?.focus();
+      }
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, []);
 
   return (
     <div className={styles.equationContainer}>
@@ -100,6 +113,7 @@ const Equation = () => {
           <div className={styles.multiNum}>
             {/* <label htmlFor="answerNum"></label> */}
             <input
+              ref={answerInputRef}
               id="answerNum"
               type="number"
               placeholder="(    )"
